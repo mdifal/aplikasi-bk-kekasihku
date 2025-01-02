@@ -99,7 +99,6 @@ export const linkStyle = {
 
 export const buttonStyle = {
   fontSize: "14px",
-  backgroundColor: "#351C43",
   color: "white",
   textTransform: "none",
   width: '100%',
