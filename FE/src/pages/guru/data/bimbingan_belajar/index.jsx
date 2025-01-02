@@ -11,11 +11,14 @@ import {
     TableSortLabel,
     TableBody,
     IconButton,
+    TextField,
 } from "@mui/material";
 import { Visibility, Delete } from "@mui/icons-material";
 import Navbar from "../../../../components/Navbar";
 import Sidebar from "../../../../components/Sidebar";
 import PaginationComponent from "../../../../components/Pagination"
+import { SelectSmall, SelectNoLabel, DatePickerSmall } from "../../../../components/Select";
+import { TextInputSearch } from "../../../../components/TextField";
 
 const BimbinganBelajar = () => {
     const [sortField, setSortField] = useState("no");
@@ -31,9 +34,50 @@ const BimbinganBelajar = () => {
     const [params, setParams] = useState({ page: "1", size: "10" });
     const totalData = 100; // total data yang tersedia
 
+    //search
+    const [searchBy, setSearchBy] = useState("tgl");
+    const itemsSearchBy = [
+        { value: 'tgl', name: "Tanggal" },
+        { value: 'tgl_tm', name: "Tanggal Tatap Muka" },
+        { value: 'nama', name: "Nama Lengkap" },
+        { value: 'guru_bk', name: "Nama Guru BK" },
+    ];
+    const itemsGuruBk = [
+        { value: 1, name: "Rosemila Amalia, S.Pd" },
+        { value: 2, name: "Pathah Pajar Mubarok, M.Pd" }
+    ];
+
+    const [searchTemp, setSearchTemp] = useState("");
+
+    const handleChangeSearchBy = (value) => {
+        setSearchBy(value);
+        setSearchTemp('')
+        // if (event.target.value === 'default') {
+        //   setFilter({ ...filter, search: "", mark_as_read: false, page: 0 });
+        //   setShouldFetch(true)
+        // }
+    };
+
+    const handleChangeTanggal = (value) => {
+        const formattedDate = value ? value.format('YYYY-MM-DD') : '';
+        setSearchTemp(formattedDate);
+    };
+
+    const handleChangeTanggalTatapMuka = (value) => {
+        const formattedDate = value ? value.format('YYYY-MM-DD') : '';
+        setSearchTemp(formattedDate);
+    };
+
+    const handleChangeNama = (value) => {
+        setSearchTemp(value);
+    };
+
+    const handleChangeGuruBk = (value) => {
+        setSearchTemp(value);
+    };
 
     return (
-        <div className="flex h-screen bg-[#EEEEEE]" >
+        <div className="flex h-full bg-[#EEEEEE]" >
             <div className="hidden md:flex">
                 <Sidebar />
             </div>
@@ -58,8 +102,29 @@ const BimbinganBelajar = () => {
                             </Typography>
                             <hr className="border border-[#9F5BC2] my-1 w-[45%]" />
                         </div>
-                        <div style={{ flexGrow: 1}}>
-                            <TableContainer component={Paper} className="mt-5" sx={{ maxHeight: '400px', overflowY: 'auto' }}>
+                        <div className="flex flex-col md:flex-row gap-x-5 gap-y-3 items-center mt-10">
+                            <SelectSmall label="Search by"
+                                initialValue={searchBy}
+                                items={itemsSearchBy}
+                                onChange={handleChangeSearchBy}></SelectSmall>
+                            {searchBy === 'guru_bk' ? (<SelectNoLabel label="Guru BK"
+                                items={itemsGuruBk}
+                                onChange={handleChangeGuruBk}></SelectNoLabel>)
+                                : (searchBy === 'tgl_tm' ? (<DatePickerSmall onChange={handleChangeTanggalTatapMuka} ></DatePickerSmall>)
+                                    : (searchBy === "nama" ? (<TextInputSearch
+                                        placeholder="Masukkan Nama Lengkap"
+                                        onChange={handleChangeNama}
+                                        onKeyDown={(e) => {
+                                            if (e.keyCode === 13) {
+                                                handleChangeNama(e);
+                                            }
+                                        }}
+                                    />)
+                                        : <DatePickerSmall onChange={handleChangeTanggal}></DatePickerSmall>))}
+                        </div>
+
+                        <div style={{ flexGrow: 1 }}>
+                            <TableContainer component={Paper} className="mt-5">
                                 <Table>
                                     <TableHead>
                                         <TableRow className="bg-[#F3F4F6]">
@@ -83,7 +148,7 @@ const BimbinganBelajar = () => {
                                                         color={"#6B7280"}
                                                         className="font-poppins"
                                                     >
-                                                        No
+                                                        NO
                                                     </Typography>
                                                 </TableSortLabel>
                                             </TableCell>
@@ -109,7 +174,7 @@ const BimbinganBelajar = () => {
                                                         color={"#6B7280"}
                                                         className="font-poppins"
                                                     >
-                                                        Tanggal
+                                                        TANGGAL
                                                     </Typography>
                                                 </TableSortLabel>
                                             </TableCell>
@@ -135,7 +200,7 @@ const BimbinganBelajar = () => {
                                                         color={"#6B7280"}
                                                         className="font-poppins"
                                                     >
-                                                        Tanggal Tatap Muka
+                                                        TANGGAL TATAP MUKA
                                                     </Typography>
                                                 </TableSortLabel>
                                             </TableCell>
@@ -159,7 +224,7 @@ const BimbinganBelajar = () => {
                                                         color={"#6B7280"}
                                                         className="font-poppins"
                                                     >
-                                                        Nama Lengkap
+                                                        NAMA LENGKAP
                                                     </Typography>
                                                 </TableSortLabel>
                                             </TableCell>
@@ -183,7 +248,7 @@ const BimbinganBelajar = () => {
                                                         color={"#6B7280"}
                                                         className="font-poppins"
                                                     >
-                                                        Guru BK
+                                                        NAMA GURU BK
                                                     </Typography>
                                                 </TableSortLabel>
                                             </TableCell>

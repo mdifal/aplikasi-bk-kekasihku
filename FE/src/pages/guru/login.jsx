@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { TextInput, PasswordInput } from "../../components/TextField.jsx";
+import { TextInputIcon, PasswordInput } from "../../components/TextField.jsx";
 import { DarkButton } from "../../components/Button.jsx";
 import { formContentWrapper, linkStyle } from "../../styles/index.jsx";
 import { Email } from "@mui/icons-material";
@@ -107,7 +107,7 @@ const Login = () => {
             Sobat KEKASIH
           </Typography>
           <form onSubmit={handleSubmit(onSubmit)} style={formContentWrapper}>
-            <TextInput
+            <TextInputIcon
               label="Email"
               fieldName="email"
               field={register}
